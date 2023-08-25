@@ -5,6 +5,8 @@ import React from "react";
 import { format } from "date-fns";
 import InfoCard from "@/components/InfoCard";
 
+const debug = true;
+
 function search({ searchResults }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
@@ -47,7 +49,7 @@ function search({ searchResults }) {
             <p className="button">More filters</p>
           </div>
           <div className="flex flex-col">
-            {searchResults.map(
+            {searchResults?.map(
               ({ img, location, total, description, star, price, title }) => (
                 <InfoCard
                   key={img}
@@ -74,7 +76,7 @@ export default search;
 
 export async function getServerSideProps() {
   try {
-    const searchResults = await fetch("https://links.papareact.com/isz").then(
+    const searchResults = await fetch("https://www.jsonkeeper.com/b/5NPS").then(
       (res) => res.json()
     );
 
