@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
     search-icon: npm install @heroicons/react
 */
 
-function Header({placeholder}) {
+function Header({ placeholder }) {
   const [searchInput, setSearchInput] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndtDate] = useState(new Date());

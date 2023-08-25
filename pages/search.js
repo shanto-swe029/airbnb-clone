@@ -3,8 +3,9 @@ import Header from "@/components/Header";
 import { useRouter } from "next/router";
 import React from "react";
 import { format } from "date-fns";
+import InfoCard from "@/components/InfoCard";
 
-function search() {
+function search({ searchResults }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
 
@@ -28,11 +29,13 @@ function search() {
 
   return (
     <div>
-      <Header placeholder={`${location} | ${range} | ${noOfGuests} guests`}/>
+      <Header placeholder={`${location} | ${range} | ${noOfGuests} guests`} />
 
       <main className="flex">
         <section className="flex-grow pt-14 px-6">
-          <p className="text-xs">300+ Stays - {range} - for {noOfGuests} guests</p>
+          <p className="text-xs">
+            300+ Stays - {range} - for {noOfGuests} guests
+          </p>
           <h1 className="text-3xl font-semibold mt-2 mb-6">
             Stays in {location}
           </h1>
@@ -43,6 +46,22 @@ function search() {
             <p className="button">Rooms and Beds</p>
             <p className="button">More filters</p>
           </div>
+          <div className="flex flex-col">
+            {searchResults.map(
+              ({ img, location, total, description, star, price, title }) => (
+                <InfoCard
+                  key={img}
+                  img={img}
+                  location={location}
+                  total={total}
+                  description={description}
+                  star={star}
+                  price={price}
+                  title={title}
+                />
+              )
+            )}
+          </div>
         </section>
       </main>
 
@@ -52,3 +71,24 @@ function search() {
 }
 
 export default search;
+
+export async function getServerSideProps() {
+  try {
+    const searchResults = await fetch("https://links.papareact.com/isz").then(
+      (res) => res.json()
+    );
+
+    return {
+      props: {
+        searchResults,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+    return {
+      props: {
+        searchResults: [],
+      },
+    };
+  }
+}
